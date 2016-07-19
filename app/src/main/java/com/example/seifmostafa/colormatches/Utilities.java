@@ -1,6 +1,10 @@
 package com.example.seifmostafa.colormatches;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.util.DisplayMetrics;
+import android.util.Log;
 
 import java.util.Random;
 
@@ -38,5 +42,4 @@ public  class Utilities {
 
             return colorAsInt;
         }
-
 }

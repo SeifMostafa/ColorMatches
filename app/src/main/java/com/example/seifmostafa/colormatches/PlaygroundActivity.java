@@ -6,11 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.*;
 
 import java.util.Random;
 import java.util.Stack;
@@ -29,7 +25,7 @@ public class PlaygroundActivity extends AppCompatActivity {
          BaseAdapter mListAdapter = new BaseAdapter() {
              @Override
             public int getCount() {
-                return 16;
+                return 64;
             }
 
             @Override
@@ -55,10 +51,15 @@ public class PlaygroundActivity extends AppCompatActivity {
                         Toast.makeText(PlaygroundActivity.this,"Color Selected",Toast.LENGTH_SHORT).show();
                     }
                 });
+                AbsListView.LayoutParams param = new AbsListView.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        gridView.getHeight()*4/getCount());
+                view.setLayoutParams(param);
                 return  view;
             }
         };
         gridView.setAdapter(mListAdapter);
+        gridView.setNumColumns(4);
     }
 
 }

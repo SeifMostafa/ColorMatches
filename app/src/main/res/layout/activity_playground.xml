@@ -4,11 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:numColumns="auto_fit"
-    android:fitsSystemWindows="true"
-    android:gravity="fill"
-    android:dividerHeight="0dp"
-    android:verticalSpacing="0dp"
-    android:horizontalSpacing="0dp"
     android:id="@+id/gridview_playground"
     tools:context="com.example.seifmostafa.colormatches.PlaygroundActivity">
 
