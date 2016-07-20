@@ -6,6 +6,9 @@ import android.graphics.Color;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -13,7 +16,7 @@ import java.util.Random;
  */
 public  class Utilities {
 
-        public static String[] mColors = {
+        public static String[] Resources = {
                 "#39add1", // light blue
                 "#3079ab", // dark blue
                 "#c25975", // mauve
@@ -30,16 +33,21 @@ public  class Utilities {
         };
 
         // Method (abilities: things the object can do)
-        public static int getColor() {
-            String color = null;
-
+        public static int[] getColors(String[] mColors) {
+            int []ColorsAsInt = new int[mColors.length];
+            List<String> list = new ArrayList<>();
+            Collections.addAll(list, mColors);
             // Randomly select a fact
-            Random randomGenerator = new Random(); // Construct a new Random number generator
-            int randomNumber = randomGenerator.nextInt(mColors.length);
-
-            color = mColors[randomNumber];
-            int colorAsInt = Color.parseColor(color);
-
-            return colorAsInt;
+            for(int i=0;i<mColors.length;i++)
+            {
+                String color = null;
+                Random randomGenerator = new Random(); // Construct a new Random number generator
+                int randomNumber = randomGenerator.nextInt(list.size());
+                color = list.get(randomNumber);
+                list.remove(randomNumber);
+                int colorAsInt = Color.parseColor(color);
+                ColorsAsInt[i]=colorAsInt;
+            }
+            return ColorsAsInt;
         }
 }
