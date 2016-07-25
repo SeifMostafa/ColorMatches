@@ -23,7 +23,7 @@ public class PlaygroundActivity extends AppCompatActivity {
     /// set control , initialize by 4 NOW
     int numcol=4;
     int totalblocks=16;
-    String waitedcolorid=null;
+    Object waitedcolorid=null;
     boolean click=false;
 
 
@@ -39,13 +39,13 @@ public class PlaygroundActivity extends AppCompatActivity {
         gridView.setNumColumns(numcol);
     }
     public class ListAdapter4Gridview extends BaseAdapter {
-        int level,numCol,colors[];
+        int level,numCol,colors[][];
         public void setsize(int i,int j)
         {
             this.level=i;
             this.numCol=j;
         }
-        public void setColors(int []mColors)
+        public void setColors(int [][]mColors)
         {
             this.colors=mColors;
         }
@@ -69,17 +69,19 @@ public class PlaygroundActivity extends AppCompatActivity {
             if (view == null) {
                 view = getLayoutInflater().inflate(R.layout.layout_color, viewGroup, false);
                 imageButton = (ImageButton) view.findViewById(R.id.imageButton_color);
-                imageButton.setBackgroundColor(colors[i]);
-                imageButton.setTag(String.valueOf(colors[i]));
+                imageButton.setBackgroundColor(colors[i][0]);
+                imageButton.setTag(colors[i][1]);
             }
             view.findViewById(R.id.imageButton_color).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(click)
                     {
-                       if(Auth2ndColor((String) view.findViewById(R.id.imageButton_color).getTag()))
+                       if(Auth2ndColor(view.findViewById(R.id.imageButton_color).getTag()))
                        {
-                           Toast.makeText(PlaygroundActivity.this,"Gun ++",Toast.LENGTH_SHORT).show();
+                           Toast.makeText(PlaygroundActivity.this,"Gun ++, "+ String.valueOf(view.findViewById(R.id.imageButton_color).getTag()),Toast.LENGTH_SHORT).show();
+                            Controller.MatchesAction((Integer) view.findViewById(R.id.imageButton_color).getTag());
+                           Controller.showGuns();
                        }
                         else
                        {
@@ -91,7 +93,7 @@ public class PlaygroundActivity extends AppCompatActivity {
                     else
                     {
                         click=true;
-                        waitedcolorid= (String) view.findViewById(R.id.imageButton_color).getTag();
+                        waitedcolorid=  view.findViewById(R.id.imageButton_color).getTag();
                     }
                 }
             });
@@ -102,9 +104,9 @@ public class PlaygroundActivity extends AppCompatActivity {
             return  view;
         }
     }
-    public boolean Auth2ndColor(String color)
+    public boolean Auth2ndColor(Object color)
     {
-        Log.i("Auth2ndColor",String.valueOf(color)+" --$$$--  "+String.valueOf(waitedcolorid));
+        Log.i("Auth2ndColor",color+" --$$$--  "+waitedcolorid);
         if(color.equals(waitedcolorid))return true;
         else return false;
     }

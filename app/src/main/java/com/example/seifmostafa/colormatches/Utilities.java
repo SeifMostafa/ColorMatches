@@ -33,8 +33,8 @@ public  class Utilities {
         };
 
         // Method (abilities: things the object can do)
-        public static int[] getColors(String[] mColors) {
-            int []ColorsAsInt = new int[mColors.length];
+        public static int[][] getColors(String[] mColors) {
+            int [][]ColorsAsInt = new int[mColors.length][2];
             List<String> list = new ArrayList<>();
             Collections.addAll(list, mColors);
             // Randomly select a fact
@@ -46,8 +46,19 @@ public  class Utilities {
                 color = list.get(randomNumber);
                 list.remove(randomNumber);
                 int colorAsInt = Color.parseColor(color);
-                ColorsAsInt[i]=colorAsInt;
+                ColorsAsInt[i][0]=colorAsInt;
+                ColorsAsInt[i][1]=getIndexFromResources(color);
             }
             return ColorsAsInt;
         }
+    /// handle -1 case
+    private static int getIndexFromResources(String chosen)
+    {
+        for(int i=0;i<Resources.length;i++)
+        {
+            if(chosen==Resources[i])
+                return i;
+        }
+        return -1;
+    }
 }
