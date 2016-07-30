@@ -52,7 +52,7 @@ public  class Utilities {
             return ColorsAsInt;
         }
     /// handle -1 case
-    private static int getIndexFromResources(String chosen)
+    public static int getIndexFromResources(String chosen)
     {
         for(int i=0;i<Resources.length;i++)
         {

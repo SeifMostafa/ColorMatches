@@ -1,9 +1,5 @@
 package com.example.seifmostafa.colormatches;
 
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,17 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
-import java.util.Random;
-import java.util.Stack;
-
-import static com.example.seifmostafa.colormatches.Utilities.*;
-
 public class PlaygroundActivity extends AppCompatActivity {
 
     GridView gridView;
     ImageButton imageButton;
     /// set control , initialize by 4 NOW
-    int numcol=4;
+    int numcol=4,Waitedid;
     int totalblocks=16;
     Object waitedcolorid=null;
     boolean click=false;
@@ -65,7 +56,7 @@ public class PlaygroundActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
+        public View getView(int i, View view, final ViewGroup viewGroup) {
             if (view == null) {
                 view = getLayoutInflater().inflate(R.layout.layout_color, viewGroup, false);
                 imageButton = (ImageButton) view.findViewById(R.id.imageButton_color);
@@ -79,21 +70,39 @@ public class PlaygroundActivity extends AppCompatActivity {
                     {
                        if(Auth2ndColor(view.findViewById(R.id.imageButton_color).getTag()))
                        {
-                           Toast.makeText(PlaygroundActivity.this,"Gun ++, "+ String.valueOf(view.findViewById(R.id.imageButton_color).getTag()),Toast.LENGTH_SHORT).show();
-                            Controller.MatchesAction((Integer) view.findViewById(R.id.imageButton_color).getTag());
-                           Controller.showGuns();
+                         //  Toast.makeText(PlaygroundActivity.this,"Gun ++, "+ String.valueOf(view.findViewById(R.id.imageButton_color).getTag()),Toast.LENGTH_SHORT).show();
+                           int[][]NEWCOLORS= Controller.MatchesAction((Integer) view.findViewById(R.id.imageButton_color).getTag(),colors);
+                           Log.i("MatchesAction",String.valueOf(NEWCOLORS[0][1])
+                                   +String.valueOf(NEWCOLORS[0][0])+String.valueOf(NEWCOLORS[1][0])+String.valueOf(NEWCOLORS[1][1]));
+                         //  Controller.showGuns();
+                           view.setBackgroundColor(NEWCOLORS[0][0]);
+                           view.setTag(NEWCOLORS[0][1]);
+                          view.setClickable(true);
+                          ImageButton oldview = (ImageButton) viewGroup.findViewById(Waitedid);
+                           oldview.setBackgroundColor(NEWCOLORS[1][0]);
+                           oldview.setTag(NEWCOLORS[1][1]);
+                           oldview.setClickable(true);
+                           click=false;
+                           notifyDataSetChanged();
+                           waitedcolorid=null;
                        }
                         else
                        {
-                           Toast.makeText(PlaygroundActivity.this,"Doesn't match",Toast.LENGTH_SHORT).show();
+                           ImageButton oldview = (ImageButton) viewGroup.findViewById(Waitedid);
+                           oldview.setClickable(true);
+                           waitedcolorid=  view.findViewById(R.id.imageButton_color).getTag();
+                           view.findViewById(R.id.imageButton_color).setClickable(false);
+                           Waitedid=view.getId();
+
                        }
-                        click=false;
-                        waitedcolorid=null;
                     }
                     else
                     {
                         click=true;
                         waitedcolorid=  view.findViewById(R.id.imageButton_color).getTag();
+                        view.findViewById(R.id.imageButton_color).setClickable(false);
+                        Waitedid=view.getId();
+                        Log.i("VerifyingVIEWID",String.valueOf(viewGroup.findViewById(Waitedid).getTag()));
                     }
                 }
             });
@@ -101,16 +110,26 @@ public class PlaygroundActivity extends AppCompatActivity {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     gridView.getHeight()*numCol/getCount());
             view.setLayoutParams(param);
+
             return  view;
         }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+        }
+
     }
     public boolean Auth2ndColor(Object color)
     {
-        Log.i("Auth2ndColor",color+" --$$$--  "+waitedcolorid);
-        if(color.equals(waitedcolorid))return true;
+        Log.i("Auth2ndColor",color+" --$$$--  "+waitedcolorid.toString());
+        if(waitedcolorid!=null)
+        {
+            if(color.equals(waitedcolorid))return true;
+            else return false;
+        }
         else return false;
     }
-
 }
 
 
